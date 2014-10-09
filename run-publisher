@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#spark-submit --class "MQTTPublisher" --master local[*] publisher/target/scala-2.10/publisher-assembly-1.0.jar tcp://54.183.201.131:1883 amq.topic
+cd publisher
+../../sbt/bin/sbt assembly "run tcp://54.183.201.131:1883 amq.topic"

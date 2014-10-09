@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#spark-submit --class "MQTTWordCount" --master local[*] receiver/target/scala-2.10/receiver-assembly-1.0.jar tcp://54.183.201.131:1883 amq.topic
+cd receiver
+../../sbt/bin/sbt assembly "run tcp://54.183.201.131:1883 amq.topic"
