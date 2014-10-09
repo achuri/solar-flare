@@ -1,6 +1,6 @@
 import org.eclipse.paho.client.mqttv3.{MqttClient, MqttClientPersistence, MqttException, MqttMessage, MqttTopic,MqttConnectOptions}
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence
-import scala.util.Random
+
 /**
  * A simple Mqtt publisher for demonstration purposes, repeatedly publishes
  * Space separated String Message "hello mqtt demo for spark streaming"
