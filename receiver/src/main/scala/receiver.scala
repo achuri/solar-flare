@@ -1,6 +1,7 @@
 import com.datastax.spark.connector.SomeColumns
 import com.datastax.spark.connector.streaming._
 import com.solarcity.flare.MQTTUtilsCustom
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.StreamingContext._
 import org.apache.spark.SparkConf
@@ -8,6 +9,9 @@ import org.apache.spark.SparkConf
 object MQTTWordCount {
 
   def main(args: Array[String]) {
+
+    Logger.getRootLogger.setLevel(Level.ERROR)
+
     if (args.length < 2) {
       System.err.println(
         "Usage: MQTTWordCount <MqttBrokerUrl> <topic>")
