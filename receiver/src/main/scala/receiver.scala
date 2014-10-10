@@ -16,7 +16,6 @@ object MQTTWordCount {
 
     val sparkConf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
                                        .setJars(Array("target/scala-2.10/receiver-assembly-1.0.jar"))
-                                       .set("spark.cleaner.ttl", "3600")
                                        .setAppName("MQTTWordCount")
                                        .setMaster("spark://172.31.1.42:7077")
 
