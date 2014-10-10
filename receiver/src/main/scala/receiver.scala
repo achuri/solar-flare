@@ -16,10 +16,9 @@ object MQTTWordCount {
 
     val sparkConf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
                                        .setJars(Array("target/scala-2.10/receiver-assembly-1.0.jar"))
-    				       .set("spark.cleaner.ttl", "3600")
-    				       .setAppName("MQTTWordCount")
-    				       .setMaster("spark://172.31.1.42:7077")
-    //val sparkConf = new SparkConf(true).setAppName("MQTTWordCount").setMaster("spark://172.31.1.42:7077")
+                                       .set("spark.cleaner.ttl", "3600")
+                                       .setAppName("MQTTWordCount")
+                                       .setMaster("spark://172.31.1.42:7077")
 
     println("Creating MQTT input stream")
     val Seq(brokerUrl, topic) = args.toSeq
