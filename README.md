@@ -21,7 +21,7 @@ $ sbt assembly
 
 ### Usage
 
-Run publisher:
+In the base `solar-flare` project directory, run publisher:
 ```
 $ ./run-publisher
 ```
