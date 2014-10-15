@@ -4,7 +4,7 @@ name := "publisher"
 
 version := "1.0"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.3"
 
 seq(assemblySettings: _*)
 
@@ -14,7 +14,8 @@ mergeStrategy in assembly := {
 }
 
 libraryDependencies ++= Seq(
-  "org.eclipse.paho"       % "mqtt-client"          % "0.4.0"
+  "org.eclipse.paho"       % "mqtt-client"          % "0.4.0",
+  "joda-time"              %  "joda-time"           % "2.3"
 )
 
 resolvers ++= Seq(

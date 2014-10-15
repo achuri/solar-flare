@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
   "org.apache.spark"      %% "spark-core"           % "0.9.1",
   "org.apache.spark"      %% "spark-streaming"      % "0.9.1",
   "org.apache.spark"      %% "spark-streaming-mqtt" % "0.9.1",
-  "org.json4s"            %% "json4s-jackson"            % "3.2.9",
+  "org.json4s"            %% "json4s-jackson"         % "3.2.9",
   "com.datastax.spark" %% "spark-cassandra-connector" % "1.0.0"
 )
 

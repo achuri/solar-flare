@@ -4,7 +4,7 @@ name := "solar-flare"
 
 version := "0.1"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.11.3"
 
 seq(assemblySettings: _*)
 
@@ -24,6 +24,7 @@ libraryDependencies ++= Seq(
   "org.apache.spark"      %% "spark-streaming-mqtt"      % "0.9.1",
   "org.eclipse.paho"       % "mqtt-client"               % "0.4.0",
   "org.json4s"            %% "json4s-jackson"            % "3.2.9",
+  "joda-time"              %  "joda-time"                % "2.3",
   "com.datastax.spark"    %% "spark-cassandra-connector" % "1.0.0"
 )
 
