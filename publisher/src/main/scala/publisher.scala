@@ -24,7 +24,10 @@ object publisher {
       }
       for (m <- meters) {
         val ts = new DateTime(DateTimeZone.UTC).toString()
-        val x = rng.nextDouble*6000
+        val kw   = rng.nextDouble*6000
+        val pf   = rng.nextDouble*1
+        val temp = rng.nextDouble*100
+        val rx   = rng.nextDouble*600
         val msg = s"""
         {
            "Messages":[
@@ -34,7 +37,12 @@ object publisher {
                        "DeviceType":"PowerBlaster",
                        "Measured":"$ts"
                     },
-                    "Values":{ "ACPower": $x }
+                    "Values":{
+                       "RealPower": $kw,
+                       "PowerFactor": $pf,
+                       "Temperature": $temp,
+                       "ReactivePower": $rx
+                    }
                  },
                  "Envelope":{ "Topic":"/device/measurement/realtime/post/$m" }
               }

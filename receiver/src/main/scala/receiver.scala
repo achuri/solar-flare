@@ -11,12 +11,12 @@ import org.json4s.jackson.JsonMethods._
 
 object receiver {
 
-  case class Measurement(timeStamp:Long, value:Double)
+  case class Measurement(timeStamp:Long, values:Array[(String, Double)])
 
   def toKeyedMeasurement(js: JValue): (String,Measurement) = {
     implicit val formats = DefaultFormats
     val s = new DateTime( ((js\"Messages")(0)\"Body"\"Status"\"Measured").extract[String] ).getMillis
-    val v = ((js\"Messages")(0)\"Body"\"Values"\"ACPower").extract[Double]
+    val v = ((js\"Messages")(0)\"Body"\"Values").values.asInstanceOf[Map[String,Double]].toArray
     val k = ((js\"Messages")(0)\"Envelope"\"Topic").extract[String].split("/").last
     (k, Measurement(s,v))
   }
