@@ -10,14 +10,14 @@ import scala.util.Random
 object publisher {
 
   val rng = new Random()
-  val meterAssetIDs = (1 to 25).map("Meter"+_.toString)
+  val meterAssetIDs = (1 to 100000).map("Meter"+_.toString)
 
   var client: MqttClient = _
 
   def runPublisher(msgtopic: MqttTopic): Unit = {
     println("Starting message loop")
     while (true) {
-      val randIndex = rng.nextInt(meterAssetIDs.length/2)
+      val randIndex = rng.nextInt(meterAssetIDs.length)
       val meters = rng.nextDouble() match {
         case d if d <= 0.5 => meterAssetIDs.drop(randIndex)
         case d if d >= 0.5 => meterAssetIDs.dropRight(randIndex)
@@ -49,9 +49,10 @@ object publisher {
            ]
         }"""
         val message: MqttMessage = new MqttMessage(String.valueOf(msg).getBytes("utf-8"))
+        message.setQos(0)
         msgtopic.publish(message)
       }
-      Thread.sleep(math.abs(rng.nextLong % 2000))
+      Thread.sleep(math.abs(rng.nextLong % 1000))
     }
   }
 
