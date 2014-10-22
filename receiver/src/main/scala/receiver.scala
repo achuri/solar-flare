@@ -1,3 +1,5 @@
+import breeze.linalg.DenseVector
+import breeze.interpolation.LinearInterpolator
 import com.datastax.spark.connector.SomeColumns
 import com.datastax.spark.connector.streaming._
 import com.solarcity.flare.MQTTUtilsCustom
@@ -5,8 +7,6 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.streaming.StreamingContext._
 import org.apache.spark.SparkConf
-import breeze.linalg._
-import breeze.interpolation._
 import org.joda.time.DateTime
 import org.json4s.{JValue, DefaultFormats}
 import org.json4s.jackson.JsonMethods._
