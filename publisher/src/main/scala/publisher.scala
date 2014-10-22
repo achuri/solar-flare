@@ -52,7 +52,7 @@ object publisher {
         message.setQos(0)
         msgtopic.publish(message)
       }
-      Thread.sleep(math.abs(rng.nextLong % 1000))
+      Thread.sleep(math.abs(rng.nextLong % 2000))
     }
   }
 
