@@ -13,12 +13,12 @@ import org.json4s.jackson.JsonMethods._
 
 object receiver {
 
-  case class Measurement(timeStamp:Long, values:Array[(String, Double)])
+  case class Measurement(timeStamp:Long, values:Map[String, Double])
 
   def toKeyedMeasurement(js: JValue): (String,Measurement) = {
     implicit val formats = DefaultFormats
     val s = new DateTime( ((js\"Messages")(0)\"Body"\"Status"\"Measured").extract[String] ).getMillis
-    val v = ((js\"Messages")(0)\"Body"\"Values").values.asInstanceOf[Map[String,Double]].toArray
+    val v = ((js\"Messages")(0)\"Body"\"Values").values.asInstanceOf[Map[String,Double]]
     val k = ((js\"Messages")(0)\"Envelope"\"Topic").extract[String].split("/").last
     (k, Measurement(s,v))
   }
@@ -26,10 +26,10 @@ object receiver {
   def interpolateStream(tup: (String, Seq[Measurement])) = {
     val measurements = tup._2
     if (measurements.length > 1) {
-      val x = measurements.map(_.timeStamp).toArray.map(_.toDouble)
-      val y = measurements.map(_.values).map(_.toMap).flatMap(_.get("RealPower")).toArray
+      val x = measurements.map(_.timeStamp).map(_.toDouble).toArray
+      val y = measurements.map(_.values).flatMap(_.get("RealPower")).toArray
       val interpFunc = LinearInterpolator( DenseVector(x), DenseVector(y) )
-      tup._1 + ": " + interpFunc(System.currentTimeMillis.toDouble-1000)
+      tup._1 + ": " + interpFunc(System.currentTimeMillis.toDouble)
     }
   }
 
@@ -37,19 +37,19 @@ object receiver {
 
     Logger.getRootLogger.setLevel(Level.ERROR)
 
-    if (args.length < 2) {
+    if (args.length < 3) {
       System.err.println(
-        "Usage: receiver <MqttBrokerUrl> <topic>")
+        "Usage: receiver <SparkMasterUrl> <MqttBrokerUrl> <topic>")
       System.exit(1)
     }
-
+    
+    val Seq(sparkMasterUrl, brokerUrl, topic) = args.toSeq
     val sparkConf = new SparkConf(true).set("spark.cassandra.connection.host", "localhost")
                                        .setJars(Array("target/scala-2.10/receiver-assembly-1.0.jar"))
                                        .setAppName("receiver")
-                                       .setMaster("spark://172.31.1.42:7077")
+                                       .setMaster(sparkMasterUrl)
 
     println("Creating MQTT input stream")
-    val Seq(brokerUrl, topic) = args.toSeq
     val ssc = new StreamingContext(sparkConf, Seconds(2))
     val stream = MQTTUtilsCustom.createStream(ssc, brokerUrl, topic)
 
