@@ -30,20 +30,3 @@ Run receiver:
 ```
 $ ./run-receiver
 ```
-
-Check wordcount inserts as data is ingested, processed, and persisted:
-```
-$ cqlsh
-cqlsh> use test;
-cqlsh:test> select * from wordcount;
-
- word      | count
------------+-------
-     hello |   602
- streaming |   602
-       for |   602
-      mqtt |   602
-      demo |   602
-     spark |   602
-
-```
