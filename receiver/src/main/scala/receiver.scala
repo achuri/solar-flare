@@ -38,8 +38,7 @@ object receiver {
     Logger.getRootLogger.setLevel(Level.ERROR)
 
     if (args.length < 3) {
-      System.err.println(
-        "Usage: receiver <SparkMasterUrl> <MqttBrokerUrl> <topic>")
+      System.err.println("Usage: receiver <SparkMasterUrl> <MqttBrokerUrl> <topic>")
       System.exit(1)
     }
     
