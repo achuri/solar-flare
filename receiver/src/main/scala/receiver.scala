@@ -23,15 +23,18 @@ object receiver {
     (k, Measurement(s,v))
   }
 
-  def interpolateStream(tup: (String, Seq[Measurement])) = {
-    val measurements = tup._2
-    if (measurements.length > 1) {
+  type ExtractedMeasurement = PartialFunction[Tuple2[String,Seq[Measurement]],String]
+
+  def interpolateStream: ExtractedMeasurement = {
+    case tup if tup._2.length > 1 => {
+      val measurements = tup._2
       val x = measurements.map(_.timeStamp).map(_.toDouble).toArray
       val y = measurements.map(_.values).flatMap(_.get("RealPower")).toArray
       val interpFunc = LinearInterpolator( DenseVector(x), DenseVector(y) )
       tup._1 + ": " + interpFunc(System.currentTimeMillis.toDouble)
     }
   }
+
 
   def main(args: Array[String]) {
 
@@ -49,7 +52,7 @@ object receiver {
                                        .setMaster(sparkMasterUrl)
 
     println("Creating MQTT input stream")
-    val ssc = new StreamingContext(sparkConf, Seconds(2))
+    val ssc = new StreamingContext(sparkConf, Seconds(10))
     val stream = MQTTUtilsCustom.createStream(ssc, brokerUrl, topic)
 
     println("Parsing out data from stream and interpolating")
@@ -57,11 +60,11 @@ object receiver {
     //stream.map(parse(_)).map(toKeyedMeasurement).print()
 
     // TODO: interpolate andThen saveToCassandra
-    stream.window(Seconds(10))
+    stream.window(Seconds(30))
       .map(parse(_))
       .map(toKeyedMeasurement)
       .groupByKey()
-      .map(interpolateStream)
+      .transform(_.collect(interpolateStream))
       .print()
 
     ssc.start()
