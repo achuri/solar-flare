@@ -65,7 +65,8 @@ object receiver {
       .map(toKeyedMeasurement)
       .groupByKey()
       .transform(_.collect(interpolateStream))
-      .print()
+      //.print()
+      .saveToCassandra("test", "solarflare2", SomeColumns("value"))
 
     ssc.start()
     ssc.awaitTermination()
